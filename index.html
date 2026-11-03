@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="favicon.png">
+<title>Mondo Reads · Weekly Book Club Podcast</title>
+<meta name="description" content="Six friends, one book at a time. A weekly book club podcast. Read along with us.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f1b2d;--navy2:#16253c;--ink:#e9e4d8;--muted:#a9b2c1;--gold:#d4a843;--gold2:#f0cf7a;--line:#26354d;--card:#13213a}
+*{box-sizing:border-box;margin:0}
+body{background:var(--navy);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--gold2)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{padding:22px 0;border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;font:800 22px Fraunces,serif;color:var(--ink);text-decoration:none}
+nav a{color:var(--muted);text-decoration:none;font-weight:500;margin-left:20px;font-size:15px}
+nav a:hover{color:var(--gold2)}
+.hero{padding:72px 20px 56px}
+.eyebrow{color:var(--gold);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+h1{font:800 clamp(40px,7vw,68px)/1.05 Fraunces,serif;margin:14px 0 18px}
+h1 em{color:var(--gold);font-style:normal}
+.lede{color:var(--muted);font-size:19px;max-width:560px}
+.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--navy2)}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.btn svg{width:18px;height:18px;fill:currentColor}
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font:800 34px/1.15 Fraunces,serif;margin-bottom:8px}
+.sub{color:var(--muted);margin-bottom:26px}
+.video{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px}
+.now{display:grid;grid-template-columns:150px 1fr;gap:28px;align-items:start;margin-bottom:28px}
+.cover{aspect-ratio:2/3;border-radius:8px;background:linear-gradient(160deg,#2e4d3a,#14281d);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;font:800 20px/1.1 Fraunces,serif;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.cover small{font:500 12px Inter;color:#cfd8c9;margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:13px 12px;border-bottom:1px solid var(--line)}
+tr.next td{background:rgba(212,168,67,.09)}
+tr.done td{color:var(--muted)}
+.tag{font-size:12px;color:var(--gold);font-weight:600;margin-left:6px}
+.pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--gold);color:var(--navy)}
+.upnext{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.upnext span{padding:7px 13px;border:1px dashed var(--line);border-radius:999px;color:var(--muted);font-size:14px}
+.book{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:20px}
+.bookhead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.bookhead h3{font:800 26px Fraunces,serif}
+.by{color:var(--muted);font-size:15px}
+.avg{text-align:right}
+.avg b{font:800 40px/1 Fraunces,serif;color:var(--gold)}
+.avg span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.eps{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 6px}
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:16px}
+.rev{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--navy2)}
+.rev .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.rev .nm{font-weight:700}
+.rev .sc{font:800 22px Fraunces,serif;color:var(--gold)}
+.rev .sc small{font:500 12px Inter;color:var(--muted)}
+.rev p{color:var(--muted);font-size:14.5px}
+.bar{height:4px;border-radius:4px;background:var(--line);margin:8px 0 10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold)}
+.quotes{margin-top:18px}
+.quotes blockquote{border-left:3px solid var(--gold);padding:4px 0 4px 14px;margin:10px 0;font:600 17px/1.5 Fraunces,serif}
+.quotes cite{display:block;font:500 13px Inter;color:var(--muted);font-style:normal;margin-top:4px}
+.crew{display:flex;flex-wrap:wrap;gap:10px}
+.crew span{padding:10px 18px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:600}
+footer{padding:36px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+
+header{padding:16px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(15,27,45,.96);backdrop-filter:blur(8px);z-index:5}
+.brand img{border-radius:8px}
+.icons{display:flex;gap:8px}.icons a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;color:var(--ink)}.icons a:hover{border-color:var(--gold);color:var(--gold2)}.icons svg{width:18px;height:18px;fill:currentColor}
+.tabs{display:flex;gap:4px;margin-top:14px;overflow-x:auto}
+.tabs a{padding:10px 14px;color:var(--muted);text-decoration:none;font-weight:600;font-size:15px;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs a.on{color:var(--gold2);border-color:var(--gold)}
+.panel{display:none;padding:40px 0 56px}.panel.on{display:block}
+.mt{margin-top:44px;margin-bottom:16px}
+h1{font:800 clamp(34px,6vw,52px)/1.1 Fraunces,serif;margin:6px 0 4px}
+.nextcard{margin-top:22px;border:1px solid var(--gold);border-radius:14px;padding:18px 20px;background:rgba(212,168,67,.07)}
+.nextcard .k{color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.nextcard .big{font:800 28px Fraunces,serif;margin:4px 0}
+.nextcard .meta{color:var(--muted)}
+.now{grid-template-columns:170px 1fr;margin:0}
+details.book{padding:0}
+details.book summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px}
+details.book summary::-webkit-details-marker{display:none}
+details.book summary h3{font:800 22px Fraunces,serif}
+.chev{transition:transform .2s;color:var(--muted);font-size:20px}
+details[open] .chev{transform:rotate(90deg)}
+.sumr{display:flex;align-items:center;gap:18px}
+.avg b{font-size:32px}
+.inner{padding:0 24px 24px;border-top:1px solid var(--line)}
+.inner h4{font:700 12px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+.empty{color:var(--muted);font-size:14px}
+
+@media(max-width:640px){
+  .now{grid-template-columns:1fr}.cover{max-width:130px}
+  nav{display:none}
+  .now{grid-template-columns:1fr}.cover{max-width:140px}
+  .hide-sm{display:none}
+  td,th{padding:11px 8px}
+  .avg{text-align:left}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="#now"><img src="logo.png" alt="" width="40" height="40">Mondo Reads</a>
+  <div class="icons" id="icons"></div>
+</div>
+<div class="wrap"><nav class="tabs" role="tablist">
+  <a href="#now" data-tab="now">Now reading</a><a href="#schedule" data-tab="schedule">Schedule</a><a href="#library" data-tab="library">Library</a><a href="#crew" data-tab="crew">Crew</a>
+</nav></div></header>
+
+<main class="wrap">
+<section class="panel" id="p-now">
+  <div class="now">
+    <div class="cover" id="cover"></div>
+    <div>
+      <div class="eyebrow">Now reading</div>
+      <h1 id="nowtitle"></h1>
+      <div class="by" id="nowby"></div>
+      <div class="nextcard" id="nextcard"></div>
+    </div>
+  </div>
+  <h2 class="mt">Latest episode</h2>
+  <div class="video" id="video"></div>
+</section>
+
+<section class="panel" id="p-schedule">
+  <h2 id="schedtitle"></h2>
+  <p class="sub" id="readnote"></p>
+  <table><thead><tr><th>Ep</th><th>Chapters</th><th class="hide-sm">Pages</th><th>Read by</th></tr></thead><tbody id="sched"></tbody></table>
+  <div class="upnext" id="upnext"></div>
+</section>
+
+<section class="panel" id="p-library">
+  <h2>Library</h2>
+  <p class="sub">Every book we've finished. Tap one for our scores, reviews and favorite quotes.</p>
+  <div id="books"></div>
+</section>
+
+<section class="panel" id="p-crew">
+  <h2>The crew</h2>
+  <p class="sub">A weekly book club podcast, recorded remotely every Sunday.</p>
+  <div class="crew" id="crew"></div>
+</section>
+</main>
+<footer><div class="wrap">Mondo Reads · <span id="year"></span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = window.SITE;
+const icons = {
+  youtube:'<svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>',
+  tiktok:'<svg viewBox="0 0 24 24"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.4a2.9 2.9 0 1 1-2-2.7V9.2a6.3 6.3 0 1 0 5.4 6.2V8.6a8.2 8.2 0 0 0 3.8 1.2z"/></svg>',
+  instagram:'<svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1z"/></svg>'
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+const today = new Date(); today.setHours(0,0,0,0);
+const $ = id => document.getElementById(id);
+
+$('icons').innerHTML = ['youtube','tiktok','instagram'].map(k=>`<a href="${S.links[k]}" target="_blank" rel="noopener" aria-label="${k}">${icons[k]}</a>`).join('');
+
+const c = S.current;
+const next = c.sections.find(s => new Date(s.readBy+'T23:59:00') >= today) || c.sections[c.sections.length-1];
+$('cover').innerHTML = `${esc(c.title)}<small>${esc(c.author)}</small>`;
+$('nowtitle').textContent = c.title; $('nowby').textContent = c.author;
+$('nextcard').innerHTML = `<div class="k">Read this week</div><div class="big">Chapters ${esc(next.chapters)}</div><div class="meta">Pages ${esc(next.pages)} · finish by ${fmt(next.readBy)}, when episode ${next.ep} goes up</div><div style="margin-top:12px"><a href="#schedule">See the full schedule →</a></div>`;
+$('video').innerHTML = S.latestVideoId
+  ? `<iframe src="https://www.youtube-nocookie.com/embed/${esc(S.latestVideoId)}" title="Latest Mondo Reads episode" allowfullscreen loading="lazy"></iframe>`
+  : `<div class="ph"><div><p>New episodes every Sunday.</p><p style="margin-top:14px"><a class="btn primary" href="${S.links.youtube}" target="_blank" rel="noopener">${icons.youtube}Watch on YouTube</a></p></div></div>`;
+
+$('schedtitle').textContent = c.title + ' schedule';
+$('readnote').textContent = c.note;
+$('sched').innerHTML = c.sections.map(s => {
+  const d = new Date(s.readBy+'T23:59:00'); let cls='', badge='';
+  if (d < today) cls='done'; else if (s===next) { cls='next'; badge=' <span class="pill">This week</span>'; }
+  return `<tr class="${cls}"><td>${s.ep}</td><td>Ch. ${esc(s.chapters)}${s.note?`<span class="tag">${esc(s.note)}</span>`:''}</td><td class="hide-sm">${esc(s.pages)}</td><td>${fmt(s.readBy)}${badge}</td></tr>`;
+}).join('');
+$('upnext').innerHTML = '<span style="border:0;padding-left:0;color:var(--ink);font-weight:600">Up next:</span>' + S.upNext.map(b=>`<span>${esc(b)}</span>`).join('');
+
+$('books').innerHTML = S.library.map(b => {
+  const avg = b.reviews.reduce((a,r)=>a+r.score,0)/b.reviews.length;
+  const eps = b.episodes.map(e => e.url ? `<a class="btn" href="${esc(e.url)}" target="_blank" rel="noopener">${icons.youtube}${esc(e.label)}</a>` : `<span class="btn" style="opacity:.7">${esc(e.label)}</span>`).join('');
+  const revs = [...b.reviews].sort((x,y)=>y.score-x.score).map(r => `<div class="rev"><div class="top"><span class="nm">${esc(r.name)}</span><span class="sc">${r.score}<small>/10</small></span></div><div class="bar"><i style="width:${r.score*10}%"></i></div><p>${esc(r.text)}</p></div>`).join('');
+  const qs = b.quotes.length ? `<div class="quotes">${b.quotes.map(q=>`<blockquote>“${esc(q.text)}”<cite>${esc(q.where)} · picked by ${esc(q.by)}</cite></blockquote>`).join('')}</div>` : '<p class="empty">Quotes start with East of Eden.</p>';
+  return `<details class="book"><summary><div><h3>${esc(b.title)}</h3><div class="by">${esc(b.author)} · finished ${fmt(b.finished)}</div></div><div class="sumr"><div class="avg"><b>${avg.toFixed(1)}</b><span>avg</span></div><span class="chev">›</span></div></summary>
+  <div class="inner"><h4>Episodes</h4><div class="eps">${eps}</div><h4>Scores</h4><div class="reviews">${revs}</div><h4>Favorite quotes</h4>${qs}</div></details>`;
+}).join('');
+
+$('crew').innerHTML = S.members.map(m=>`<span>${esc(m)}</span>`).join('');
+$('year').textContent = new Date().getFullYear();
+
+function show(){ const t=(location.hash||'#now').slice(1); const tab=['now','schedule','library','crew'].includes(t)?t:'now';
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+tab));
+  document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.tab===tab)); window.scrollTo(0,0);}
+addEventListener('hashchange',show); show();
+</script>
+</body>
+</html>
