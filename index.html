@@ -84,7 +84,12 @@ h1{font:800 clamp(34px,6vw,52px)/1.1 Fraunces,serif;margin:6px 0 4px}
 .nextcard .k{color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
 .nextcard .big{font:800 28px Fraunces,serif;margin:4px 0}
 .nextcard .meta{color:var(--muted)}
-.now{grid-template-columns:170px 1fr;margin:0}
+.now{grid-template-columns:220px 1fr;margin:0;align-items:stretch}
+.cover{position:relative;overflow:hidden;padding:0;aspect-ratio:auto;min-height:330px}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover .fb{position:absolute;inset:auto 0 0 0;padding:14px}
+.thumb{width:44px;height:66px;border-radius:4px;object-fit:cover;flex:none;background:var(--navy2)}
+.suml{display:flex;gap:16px;align-items:center}
 details.book{padding:0}
 details.book summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px}
 details.book summary::-webkit-details-marker{display:none}
@@ -98,7 +103,7 @@ details[open] .chev{transform:rotate(90deg)}
 .empty{color:var(--muted);font-size:14px}
 
 @media(max-width:640px){
-  .now{grid-template-columns:1fr}.cover{max-width:130px}
+  .now{grid-template-columns:1fr}.cover{width:150px;min-height:225px}
   nav{display:none}
   .now{grid-template-columns:1fr}.cover{max-width:140px}
   .hide-sm{display:none}
@@ -155,6 +160,7 @@ details[open] .chev{transform:rotate(90deg)}
 <script src="data.js"></script>
 <script>
 const S = window.SITE;
+const coverUrl = b => b.isbn ? `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg` : '';
 const icons = {
   youtube:'<svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>',
   tiktok:'<svg viewBox="0 0 24 24"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.4a2.9 2.9 0 1 1-2-2.7V9.2a6.3 6.3 0 1 0 5.4 6.2V8.6a8.2 8.2 0 0 0 3.8 1.2z"/></svg>',
@@ -167,32 +173,39 @@ const $ = id => document.getElementById(id);
 
 $('icons').innerHTML = ['youtube','tiktok','instagram'].map(k=>`<a href="${S.links[k]}" target="_blank" rel="noopener" aria-label="${k}">${icons[k]}</a>`).join('');
 
-const c = S.current;
+const end = bk => new Date(bk.sections[bk.sections.length-1].readBy+'T23:59:00');
+let ci = S.reading.findIndex(bk => end(bk) >= today); if (ci < 0) ci = S.reading.length-1;
+const c = S.reading[ci], after = S.reading[ci+1];
 const next = c.sections.find(s => new Date(s.readBy+'T23:59:00') >= today) || c.sections[c.sections.length-1];
-$('cover').innerHTML = `${esc(c.title)}<small>${esc(c.author)}</small>`;
+$('cover').innerHTML = `<div class="fb">${esc(c.title)}<small style="display:block">${esc(c.author)}</small></div>` + (c.isbn ? `<img src="${coverUrl(c)}" alt="${esc(c.title)} cover" onerror="this.remove()">` : '');
 $('nowtitle').textContent = c.title; $('nowby').textContent = c.author;
-$('nextcard').innerHTML = `<div class="k">Read this week</div><div class="big">Chapters ${esc(next.chapters)}</div><div class="meta">Pages ${esc(next.pages)} · finish by ${fmt(next.readBy)}, when episode ${next.ep} goes up</div><div style="margin-top:12px"><a href="#schedule">See the full schedule →</a></div>`;
-$('video').innerHTML = S.latestVideoId
-  ? `<iframe src="https://www.youtube-nocookie.com/embed/${esc(S.latestVideoId)}" title="Latest Mondo Reads episode" allowfullscreen loading="lazy"></iframe>`
+const thenLine = (after && next === c.sections[c.sections.length-1])
+  ? `<div class="meta" style="margin-top:10px">Then we start <b style="color:var(--ink)">${esc(after.title)}</b>: ${esc(after.sections[0].chapters)} by ${fmt(after.sections[0].readBy)}.</div>` : '';
+$('nextcard').innerHTML = `<div class="k">Read this week</div><div class="big">${esc(next.chapters)}</div><div class="meta">Pages ${esc(next.pages)} · finish by ${fmt(next.readBy)}, when episode ${next.ep} goes up</div>${thenLine}<div style="margin-top:12px"><a href="#schedule">See the full schedule →</a></div>`;
+$('video').innerHTML = S.channelId
+  ? `<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UULF${esc(S.channelId.slice(2))}" title="Latest Mondo Reads episode" allowfullscreen loading="lazy"></iframe>`
   : `<div class="ph"><div><p>New episodes every Sunday.</p><p style="margin-top:14px"><a class="btn primary" href="${S.links.youtube}" target="_blank" rel="noopener">${icons.youtube}Watch on YouTube</a></p></div></div>`;
 
-$('schedtitle').textContent = c.title + ' schedule';
-$('readnote').textContent = c.note;
-$('sched').innerHTML = c.sections.map(s => {
+const table = bk => `<table><thead><tr><th>Ep</th><th>Reading</th><th class="hide-sm">Pages</th><th>Read by</th></tr></thead><tbody>` + bk.sections.map(s => {
   const d = new Date(s.readBy+'T23:59:00'); let cls='', badge='';
   if (d < today) cls='done'; else if (s===next) { cls='next'; badge=' <span class="pill">This week</span>'; }
-  return `<tr class="${cls}"><td>${s.ep}</td><td>Ch. ${esc(s.chapters)}${s.note?`<span class="tag">${esc(s.note)}</span>`:''}</td><td class="hide-sm">${esc(s.pages)}</td><td>${fmt(s.readBy)}${badge}</td></tr>`;
-}).join('');
-$('upnext').innerHTML = '<span style="border:0;padding-left:0;color:var(--ink);font-weight:600">Up next:</span>' + S.upNext.map(b=>`<span>${esc(b)}</span>`).join('');
+  return `<tr class="${cls}"><td>${s.ep}</td><td>${esc(s.chapters)}${s.note?`<span class="tag">${esc(s.note)}</span>`:''}</td><td class="hide-sm">${esc(s.pages)}</td><td>${fmt(s.readBy)}${badge}</td></tr>`;
+}).join('') + '</tbody></table>';
+$('schedtitle').textContent = c.title;
+$('readnote').textContent = c.note;
+$('sched').outerHTML = '';
+document.querySelector('#p-schedule table').outerHTML = table(c) + (after ? `<h2 class="mt">Next: ${esc(after.title)}</h2><p class="sub">${esc(after.note)}</p>${table(after)}` : '');
+$('upnext').innerHTML = '<span style="border:0;padding-left:0;color:var(--ink);font-weight:600">After that:</span>' + S.upNext.map(b=>`<span>${esc(b)}</span>`).join('');
 
-$('books').innerHTML = S.library.map(b => {
+const shown = S.library.filter(b => !b.revealOn || new Date(b.revealOn+'T00:00:00') <= today);
+$('books').innerHTML = shown.length ? shown.map(b => {
   const avg = b.reviews.reduce((a,r)=>a+r.score,0)/b.reviews.length;
   const eps = b.episodes.map(e => e.url ? `<a class="btn" href="${esc(e.url)}" target="_blank" rel="noopener">${icons.youtube}${esc(e.label)}</a>` : `<span class="btn" style="opacity:.7">${esc(e.label)}</span>`).join('');
   const revs = [...b.reviews].sort((x,y)=>y.score-x.score).map(r => `<div class="rev"><div class="top"><span class="nm">${esc(r.name)}</span><span class="sc">${r.score}<small>/10</small></span></div><div class="bar"><i style="width:${r.score*10}%"></i></div><p>${esc(r.text)}</p></div>`).join('');
   const qs = b.quotes.length ? `<div class="quotes">${b.quotes.map(q=>`<blockquote>“${esc(q.text)}”<cite>${esc(q.where)} · picked by ${esc(q.by)}</cite></blockquote>`).join('')}</div>` : '<p class="empty">Quotes start with East of Eden.</p>';
-  return `<details class="book"><summary><div><h3>${esc(b.title)}</h3><div class="by">${esc(b.author)} · finished ${fmt(b.finished)}</div></div><div class="sumr"><div class="avg"><b>${avg.toFixed(1)}</b><span>avg</span></div><span class="chev">›</span></div></summary>
+  return `<details class="book"><summary><div class="suml">${b.isbn?`<img class="thumb" src="${coverUrl(b)}" alt="" onerror="this.style.visibility='hidden'">`:''}<div><h3>${esc(b.title)}</h3><div class="by">${esc(b.author)} · finished ${fmt(b.finished)}</div></div></div><div class="sumr"><div class="avg"><b>${avg.toFixed(1)}</b><span>avg</span></div><span class="chev">›</span></div></summary>
   <div class="inner"><h4>Episodes</h4><div class="eps">${eps}</div><h4>Scores</h4><div class="reviews">${revs}</div><h4>Favorite quotes</h4>${qs}</div></details>`;
-}).join('');
+}).join('') : '<p class="empty">Our first finished book shows up here Sunday, Nov 8.</p>';
 
 $('crew').innerHTML = S.members.map(m=>`<span>${esc(m)}</span>`).join('');
 $('year').textContent = new Date().getFullYear();

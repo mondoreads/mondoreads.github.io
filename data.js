@@ -6,26 +6,41 @@ window.SITE = {
     tiktok: "https://www.tiktok.com/@mondoreads",
     instagram: "https://www.instagram.com/mondo.reads/"
   },
-  // YouTube video ID of the newest episode (the part after watch?v=)
-  latestVideoId: "",
+  // Channel ID. The site embeds the channel's newest long video (Shorts excluded) automatically.
+  channelId: "UCY-cPu7T_vDLlpaRB5lxhhw",
   members: ["Mondo", "Kastor", "Aaron", "Isaac", "Bryce", "Elliott"],
 
-  current: {
-    title: "East of Eden",
-    author: "John Steinbeck",
-    note: "Chapters are official. Page numbers are the Penguin paperback, so check your copy. Read each section by its date and the episode is waiting for you.",
-    sections: [
-      { ep: 1, chapters: "1–7",   pages: "1–71",    readBy: "2026-11-15" },
-      { ep: 2, chapters: "8–11",  pages: "72–128",  readBy: "2026-11-22", note: "End of Part One" },
-      { ep: 3, chapters: "12–17", pages: "129–205", readBy: "2026-11-29" },
-      { ep: 4, chapters: "18–22", pages: "205–275", readBy: "2026-12-06", note: "End of Part Two" },
-      { ep: 5, chapters: "23–26", pages: "276–345", readBy: "2026-12-13" },
-      { ep: 6, chapters: "27–33", pages: "345–412", readBy: "2026-12-20", note: "End of Part Three" },
-      { ep: 7, chapters: "34–41", pages: "413–480", readBy: "2026-12-27" },
-      { ep: 8, chapters: "42–48", pages: "480–538", readBy: "2027-01-10", note: "Christmas week off" },
-      { ep: 9, chapters: "49–55", pages: "538–601", readBy: "2027-01-17", note: "Finale" }
-    ]
-  },
+  // Public read-along schedule, in order. "readBy" = the Sunday that episode goes up.
+  // The site shows whichever book has the next upcoming date, so it flips on its own.
+  reading: [
+    {
+      title: "Tender Is the Flesh",
+      author: "Agustina Bazterrica",
+      isbn: "9781982150921",
+      note: "Read each section by its date and the episode is waiting for you.",
+      sections: [
+        { ep: 1, chapters: "Part 1", pages: "1–72",   readBy: "2026-11-01" },
+        { ep: 2, chapters: "Part 2 to the end", pages: "72–end", readBy: "2026-11-08", note: "Finale" }
+      ]
+    },
+    {
+      title: "East of Eden",
+      author: "John Steinbeck",
+      isbn: "9780142004234",
+      note: "Chapters are official. Page numbers are the Penguin paperback, so check your copy. Read each section by its date and the episode is waiting for you.",
+      sections: [
+        { ep: 1, chapters: "Ch. 1–7",   pages: "1–71",    readBy: "2026-11-15" },
+        { ep: 2, chapters: "Ch. 8–11",  pages: "72–128",  readBy: "2026-11-22", note: "End of Part One" },
+        { ep: 3, chapters: "Ch. 12–17", pages: "129–205", readBy: "2026-11-29" },
+        { ep: 4, chapters: "Ch. 18–22", pages: "205–275", readBy: "2026-12-06", note: "End of Part Two" },
+        { ep: 5, chapters: "Ch. 23–26", pages: "276–345", readBy: "2026-12-13" },
+        { ep: 6, chapters: "Ch. 27–33", pages: "345–412", readBy: "2026-12-20", note: "End of Part Three" },
+        { ep: 7, chapters: "Ch. 34–41", pages: "413–480", readBy: "2026-12-27" },
+        { ep: 8, chapters: "Ch. 42–48", pages: "480–538", readBy: "2027-01-10", note: "Christmas week off" },
+        { ep: 9, chapters: "Ch. 49–55", pages: "538–601", readBy: "2027-01-17", note: "Finale" }
+      ]
+    }
+  ],
 
   upNext: ["Exhalation · Ted Chiang", "Fahrenheit 451 · Ray Bradbury", "The Hitchhiker's Guide to the Galaxy · Douglas Adams", "Project Hail Mary · Andy Weir"],
 
@@ -33,7 +48,9 @@ window.SITE = {
     {
       title: "Tender Is the Flesh",
       author: "Agustina Bazterrica",
+      isbn: "9781982150921",
       finished: "2026-11-08",
+      revealOn: "2026-11-08", // hidden until the finale episode is up
       episodes: [
         { label: "Part 1 · pp. 1–72", url: "" },
         { label: "Part 2 · pp. 72–end (spoilers)", url: "" }
