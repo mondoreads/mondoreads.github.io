@@ -42,7 +42,7 @@ window.SITE = {
     }
   ],
 
-  upNext: ["Exhalation · Ted Chiang", "Fahrenheit 451 · Ray Bradbury", "The Hitchhiker's Guide to the Galaxy · Douglas Adams", "Project Hail Mary · Andy Weir"],
+  upNext: ["Exhalation · Ted Chiang", "Project Hail Mary · Andy Weir", "Fahrenheit 451 · Ray Bradbury", "The Hitchhiker's Guide to the Galaxy · Douglas Adams"],
 
   library: [
     {
