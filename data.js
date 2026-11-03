@@ -36,8 +36,8 @@ window.SITE = {
         { ep: 5, chapters: "Ch. 23–26", pages: "276–345", readBy: "2026-12-13" },
         { ep: 6, chapters: "Ch. 27–33", pages: "345–412", readBy: "2026-12-20", note: "End of Part Three" },
         { ep: 7, chapters: "Ch. 34–41", pages: "413–480", readBy: "2026-12-27" },
-        { ep: 8, chapters: "Ch. 42–48", pages: "480–538", readBy: "2027-01-10", note: "Two weeks, holiday break" },
-        { ep: 9, chapters: "Ch. 49–55", pages: "538–601", readBy: "2027-01-17", note: "Finale" }
+        { ep: 8, chapters: "Ch. 42–48", pages: "480–538", readBy: "2027-01-03" },
+        { ep: 9, chapters: "Ch. 49–55", pages: "538–601", readBy: "2027-01-10", note: "Finale" }
       ]
     }
   ],
