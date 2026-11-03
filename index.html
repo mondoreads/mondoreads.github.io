@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="favicon.png">
 <title>Mondo Reads · Weekly Book Club Podcast</title>
-<meta name="description" content="Six friends, one book at a time. A weekly book club podcast. Read along with us.">
+<meta name="description" content="A weekly book club podcast. See what we're reading, the read-along schedule, and our scores for every book.">
+<meta property="og:title" content="Mondo Reads · Weekly Book Club Podcast">
+<meta property="og:description" content="See what we're reading, the read-along schedule, and our scores for every book.">
+<meta property="og:image" content="https://mondoreads.github.io/logo-full.png">
+<meta property="og:url" content="https://mondoreads.github.io/">
+<meta name="theme-color" content="#0f1b2d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -103,7 +108,25 @@ details[open] .chev{transform:rotate(90deg)}
 .inner h4{font:700 12px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
 .empty{color:var(--muted);font-size:14px}
 
+
+.now{display:grid;grid-template-columns:220px 1fr;grid-template-areas:"cover head" "cover card";column-gap:28px;align-items:start}
+.now .cover{grid-area:cover;align-self:stretch}
+.now .head{grid-area:head;align-self:end}
+.now .nextcard{grid-area:card;margin-top:20px}
+.pill{white-space:nowrap;display:inline-block;margin-left:6px}
+td:nth-child(4){white-space:nowrap}
+tr.done td{color:#5f6b80}
+tr.done td .tag{color:#7a6a45}
+tr.next td{background:rgba(212,168,67,.16);color:var(--ink);font-weight:600}
+tr.next td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+
 @media(max-width:640px){
+  .now{grid-template-columns:110px 1fr;grid-template-areas:"cover head" "card card";column-gap:18px}
+  .now .cover{width:110px;min-height:165px;align-self:start}
+  .now .head{align-self:center}
+  .now h1{font-size:30px}
+  .now .nextcard{margin-top:22px}
+  .pill{display:block;width:max-content;margin:4px 0 0}
   th:nth-child(1),td:nth-child(1){width:44px}th:nth-child(4),td:nth-child(4){width:42%}
   .now{grid-template-columns:1fr}.cover{width:150px;min-height:225px}
   nav{display:none}
@@ -127,12 +150,12 @@ details[open] .chev{transform:rotate(90deg)}
 <section class="panel" id="p-now">
   <div class="now">
     <div class="cover" id="cover"></div>
-    <div>
+    <div class="head">
       <div class="eyebrow">Now reading</div>
       <h1 id="nowtitle"></h1>
       <div class="by" id="nowby"></div>
-      <div class="nextcard" id="nextcard"></div>
     </div>
+    <div class="nextcard" id="nextcard"></div>
   </div>
   <h2 class="mt">Latest episode</h2>
   <div class="video" id="video"></div>
@@ -159,7 +182,7 @@ details[open] .chev{transform:rotate(90deg)}
 </main>
 <footer><div class="wrap">Mondo Reads · <span id="year"></span></div></footer>
 
-<script src="data.js?v=1793667347"></script>
+<script src="data.js?v=1793668317"></script>
 <script>
 const S = window.SITE;
 const coverUrl = b => b.isbn ? `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg` : '';
