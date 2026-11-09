@@ -27,6 +27,7 @@ window.SITE = {
       title: "East of Eden",
       author: "John Steinbeck",
       isbn: "9780142004234",
+      cover: "covers/east-of-eden.jpg",
       note: "Chapters are official. Page numbers are the Penguin paperback, so check your copy. Read each section by its date and the episode is waiting for you.",
       sections: [
         { ep: 1, chapters: "Ch. 1–7",   pages: "1–71",    readBy: "2026-11-15" },
@@ -67,6 +68,7 @@ window.SITE = {
       title: "East of Eden",
       author: "John Steinbeck",
       isbn: "9780142004234",
+      cover: "covers/east-of-eden.jpg",
       finished: "2027-01-10",
       revealOn: "2027-01-10", // hidden until the finale episode is up
       episodes: [
