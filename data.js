@@ -62,6 +62,21 @@ window.SITE = {
         { name: "Aaron",  score: 5,   text: "Incredibly well written. I did not like it." }
       ],
       quotes: []
+    },
+    {
+      title: "East of Eden",
+      author: "John Steinbeck",
+      isbn: "9780142004234",
+      finished: "2027-01-10",
+      revealOn: "2027-01-10", // hidden until the finale episode is up
+      episodes: [
+        { label: "Part 1 · Ch. 1–7", url: "" }
+      ],
+      reviews: [],
+      quotes: [
+        { text: "I always found in myself a dread of west and a love of east.", where: "Ch. 1", by: "Isaac" },
+        { text: "…find some strong sure man, even though he may be wrong, and to dangle from his coattails.", where: "Ch. 2", by: "Mondo" }
+      ]
     }
   ]
 };
