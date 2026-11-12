@@ -22,8 +22,8 @@ window.SITE = {
       isbn: "9781982150921",
       note: "Read each section by its date and the episode is waiting for you.",
       sections: [
-        { ep: 1, chapters: "Part 1", pages: "1–72",   readBy: "2026-11-01", video: "" },
-        { ep: 2, chapters: "Part 2 to the end", pages: "72–end", readBy: "2026-11-08", video: "", note: "Finale" }
+        { ep: 1, chapters: "Part 1", pages: "1–72",   readBy: "2026-11-01", video: "https://youtu.be/hkDol7FEyaE" },
+        { ep: 2, chapters: "Part 2 to the end", pages: "72–end", readBy: "2026-11-08", video: "https://youtu.be/W7VYTZFGu_I", note: "Finale" }
       ]
     },
     {
