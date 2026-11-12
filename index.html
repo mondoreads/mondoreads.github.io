@@ -107,6 +107,10 @@ details[open] .chev{transform:rotate(90deg)}
 .inner{padding:0 24px 24px;border-top:1px solid var(--line)}
 .inner h4{font:700 12px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
 .empty{color:var(--muted);font-size:14px}
+.watch{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:1px 9px 1px 7px;border:1px solid rgba(212,168,67,.5);border-radius:999px;color:var(--gold2);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;vertical-align:1px}
+.watch:hover{background:rgba(212,168,67,.14)}
+.watch svg{width:9px;height:9px;fill:currentColor}
+.vcap{color:var(--muted);font-size:14px;margin-top:10px}
 
 
 .now{display:grid;grid-template-columns:220px 1fr;grid-template-areas:"cover head" "cover card";column-gap:28px;align-items:start}
@@ -159,6 +163,7 @@ tr.next td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
   </div>
   <h2 class="mt">Latest episode</h2>
   <div class="video" id="video"></div>
+  <p class="vcap" id="vcap"></p>
 </section>
 
 <section class="panel" id="p-schedule">
@@ -182,7 +187,7 @@ tr.next td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
 </main>
 <footer><div class="wrap">Mondo Reads · <span id="year"></span></div></footer>
 
-<script src="data.js?v=1794194279"></script>
+<script src="data.js?v=1794363000"></script>
 <script>
 const S = window.SITE;
 const coverUrl = b => b.cover ? b.cover : b.isbn ? `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg` : '';
@@ -195,6 +200,12 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 const fmt = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 const today = new Date(); today.setHours(0,0,0,0);
 const $ = id => document.getElementById(id);
+// Episode links: pull the 11-character video ID out of any YouTube link (or a bare ID).
+const vid = u => { const m = String(u||'').trim().match(/(?:v=|youtu\.be\/|\/live\/|\/embed\/|^)([\w-]{11})(?=$|[?&#\/])/); return m ? m[1] : ''; };
+const now = new Date();
+const isLive = s => !!vid(s.video) && new Date(s.readBy+'T16:00:00') <= now;
+const watchUrl = s => `https://www.youtube.com/watch?v=${vid(s.video)}`;
+const play = '<svg viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z"/></svg>';
 
 $('icons').innerHTML = ['youtube','tiktok','instagram'].map(k=>`<a href="${S.links[k]}" target="_blank" rel="noopener" aria-label="${k}">${icons[k]}</a>`).join('');
 
@@ -208,14 +219,18 @@ $('nowtitle').textContent = c.title; $('nowby').textContent = c.author;
 const thenLine = (after && next === c.sections[c.sections.length-1])
   ? `<div class="meta" style="margin-top:10px">Then we start <b style="color:var(--ink)">${esc(after.title)}</b>: ${esc(after.sections[0].chapters)} by ${fmt(after.sections[0].readBy)}.</div>` : '';
 $('nextcard').innerHTML = `<div class="k">Read this week</div><div class="big">${esc(next.chapters)}</div><div class="meta">Pages ${esc(next.pages)} · finish by ${fmt(next.readBy)}, when episode ${next.ep} goes up</div>${thenLine}<div style="margin-top:12px"><a href="#schedule">See the full schedule →</a></div>`;
-$('video').innerHTML = S.channelId
-  ? `<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UULF${esc(S.channelId.slice(2))}" title="Latest Mondo Reads episode" allowfullscreen loading="lazy"></iframe>`
+// Latest episode = the newest schedule entry with a live video link. Never pulls Shorts.
+const liveEps = S.reading.flatMap(bk => bk.sections.filter(isLive).map(s => ({bk, s})));
+const latest = liveEps[liveEps.length-1];
+$('video').innerHTML = latest
+  ? `<iframe src="https://www.youtube-nocookie.com/embed/${vid(latest.s.video)}" title="${esc(latest.bk.title)}, episode ${latest.s.ep}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`
   : `<div class="ph"><div><p>New episodes every Sunday.</p><p style="margin-top:14px"><a class="btn primary" href="${S.links.youtube}" target="_blank" rel="noopener">${icons.youtube}Watch on YouTube</a></p></div></div>`;
+$('vcap').innerHTML = latest ? `${esc(latest.bk.title)} · Ep ${latest.s.ep}: ${esc(latest.s.chapters)} · <a href="${S.links.youtube}" target="_blank" rel="noopener">All episodes on YouTube →</a>` : '';
 
 const table = bk => `<table><thead><tr><th>Ep</th><th>Reading</th><th class="hide-sm">Pages</th><th>Read by</th></tr></thead><tbody>` + bk.sections.map(s => {
   const d = new Date(s.readBy+'T00:00:00'); let cls='', badge='';
   if (d <= today) cls='done'; else if (s===next) { cls='next'; badge=' <span class="pill">This week</span>'; }
-  return `<tr class="${cls}"><td>${s.ep}</td><td>${esc(s.chapters)}${s.note?`<span class="tag">${esc(s.note)}</span>`:''}</td><td class="hide-sm">${esc(s.pages)}</td><td>${fmt(s.readBy)}${badge}</td></tr>`;
+  return `<tr class="${cls}"><td>${s.ep}</td><td>${esc(s.chapters)}${s.note?`<span class="tag">${esc(s.note)}</span>`:''}${isLive(s)?`<a class="watch" href="${watchUrl(s)}" target="_blank" rel="noopener" aria-label="Watch episode ${s.ep}">${play}Watch</a>`:''}</td><td class="hide-sm">${esc(s.pages)}</td><td>${fmt(s.readBy)}${badge}</td></tr>`;
 }).join('') + '</tbody></table>';
 $('schedtitle').textContent = c.title;
 $('readnote').textContent = c.note;
@@ -226,7 +241,9 @@ $('upnext').innerHTML = '<span style="border:0;padding-left:0;color:var(--ink);f
 const shown = S.library.filter(b => !b.revealOn || new Date(b.revealOn+'T00:00:00') <= today);
 $('books').innerHTML = shown.length ? shown.map(b => {
   const avg = b.reviews.reduce((a,r)=>a+r.score,0)/b.reviews.length;
-  const eps = b.episodes.map(e => e.url ? `<a class="btn" href="${esc(e.url)}" target="_blank" rel="noopener">${icons.youtube}${esc(e.label)}</a>` : `<span class="btn" style="opacity:.7">${esc(e.label)}</span>`).join('');
+  const rd = S.reading.find(r => r.title === b.title);
+  const eps = (rd ? rd.sections : []).map(s => { const label = `Ep ${s.ep} · ${s.chapters}${s.note==='Finale'?' (spoilers)':''}`;
+    return isLive(s) ? `<a class="btn" href="${watchUrl(s)}" target="_blank" rel="noopener">${icons.youtube}${esc(label)}</a>` : `<span class="btn" style="opacity:.55">${esc(label)}</span>`; }).join('');
   const revs = [...b.reviews].sort((x,y)=>y.score-x.score).map(r => `<div class="rev"><div class="top"><span class="nm">${esc(r.name)}</span><span class="sc">${r.score}<small>/10</small></span></div><div class="bar"><i style="width:${r.score*10}%"></i></div><p>${esc(r.text)}</p></div>`).join('');
   const qs = b.quotes.length ? `<div class="quotes">${b.quotes.map(q=>`<blockquote>“${esc(q.text)}”<cite>${esc(q.where)} · picked by ${esc(q.by)}</cite></blockquote>`).join('')}</div>` : '<p class="empty">Quotes start with East of Eden.</p>';
   return `<details class="book"><summary><div class="suml">${(b.cover||b.isbn)?`<img class="thumb" src="${coverUrl(b)}" alt="" onerror="this.style.visibility='hidden'">`:''}<div><h3>${esc(b.title)}</h3><div class="by">${esc(b.author)} · finished ${fmt(b.finished)}</div></div></div><div class="sumr"><div class="avg"><b>${avg.toFixed(1)}</b><span>avg</span></div><span class="chev">›</span></div></summary>
